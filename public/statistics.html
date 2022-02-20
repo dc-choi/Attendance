@@ -1,0 +1,33 @@
+<html>
+<head>
+	<title>출석부</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+  <h1>장위동 중고등부 주일학교 출석부</h1>
+  <table>
+	  <tr>
+		  <td>3</td>
+		  <td>3</td>
+		  <td>3</td>
+	  </tr>
+  </table>
+  <p><a href="index.html">뒤로 가기</a></p>
+</body>
+<script>
+	const initPage = () => {
+		$.ajax({
+			type: 'get',
+			url: '/statistics',
+			data: {},
+			success: (data) => {
+				console.log(data);
+			},
+			error: (error) => {
+				console.log(error);
+			}
+		})
+	}
+	initPage();
+</script>
+</html>

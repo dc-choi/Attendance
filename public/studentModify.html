@@ -1,0 +1,181 @@
+<html>
+<head>
+	<title>출석부</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<style>
+		#body{
+			position: absolute;
+			top: 25%;
+			left: 40%;
+		}
+	</style>
+</head>
+<body id="body" align="center">
+	<h1>학생 데이터 수정 및 삭제</h1>
+	<form id="formData" action="/student" method="post">
+		<table id="list" border="1" align="center">
+			<input type="hidden" name="code" id="code">
+			<tr width="200" height="30">
+				<td>이름</td>
+				<td>
+					<input type="text" name="societyName" id="societyName">
+				</td>
+			</tr>
+			<tr width="200" height="30">
+				<td>세례명</td>
+				<td>
+					<input type="text" name="catholicName" id="catholicName">
+				</td>
+			</tr>
+			<tr width="200" height="30">
+				<td>나이</td>
+				<td>
+					<input type="text" name="age" id="age">
+				</td>
+			</tr>
+			<tr width="200" height="30">
+				<td>학년</td>
+				<td>
+					<select name="grade" id="grade">
+						<option value="선택하세요.">선택하세요.</option>
+						<option value="예비 중1">예비 중1</option>
+						<option value="중1">중1</option>
+						<option value="중2">중2</option>
+						<option value="중3">중3</option>
+						<option value="고1">고1</option>
+						<option value="고2">고2</option>
+						<option value="고3">고3</option>
+						<option value="졸업">졸업</option>
+						<option value="교사">교사</option>
+					</select>
+				</td>
+			</tr>
+			<tr width="200" height="30">
+				<td>연락처</td>
+				<td>
+					<input type="text" name="contact" id="contact">
+				</td>
+				<!-- <td><button type="button" id="clickInfo"></button></td> -->
+			</tr>
+		</table>
+	</form>
+	<p>
+		<button type="button" id="modify">수정 완료</button>
+		<button type="button" id="remove">삭제</button>
+	</p>
+	<p>
+		<a href="studentList.html">뒤로 가기</a>
+	</p>
+</body>
+<script>
+	const receivedData = location.href.split('?')[1];
+	console.log(receivedData); // data
+
+	const initPage = () => {
+		$.ajax({
+			url: "/student/info",
+			type: 'GET',
+			data: { receivedData },
+			success: (data) => {
+				console.log(data);
+				$('#code').val(data.s_code);
+				$('#societyName').val(data.s_society_name);
+				$('#catholicName').val(data.s_catholic_name);
+				$('#age').val(data.s_age);
+				$('#grade').val(data.s_grade);
+				$('#contact').val(data.s_contact);
+			},
+			error: (error) => {
+				alert(error.responseText);
+			}
+		});
+	};
+
+	const checkData = (formData) => {
+		const ageRegExp = new RegExp('[1-9]');
+		const contactRegExp = new RegExp('^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$');
+		if (formData.societyName.length < 1) {
+			alert("이름을 정확히 입력하세요.");
+			$("#societyName").focus();
+			return false;
+		}
+		if (formData.catholicName.length < 1) {
+			alert("세례명을 정확히 입력하세요.");
+			$("#catholicName").focus();
+			return false;
+		}
+		if (formData.age.length < 1 || !ageRegExp.test(formData.age)) {
+			alert("나이을 정확히 입력하세요.");
+			$("#age").focus();
+			return false;
+		}
+		if (formData.grade === '선택하세요.') {
+			alert("학년을 선택하세요.");
+			$("#grade").focus();
+			return false;
+		}
+		if (!contactRegExp.test(formData.contact)) {
+			alert("연락처를 정확히 입력하세요.");
+			$("#contact").focus();
+			return false;
+		}
+		return true;
+	};
+
+	initPage();
+
+	$("#modify").on("click", () => {
+		if (confirm('정말 수정하시겠습니까?')) {
+			// let formData = $("#formData").serialize(); // 검증이 불가능해서 사용금지!
+			const code = $("#code").val();
+			const societyName = $("#societyName").val();
+			const catholicName = $("#catholicName").val();
+			const age = $("#age").val();
+			const grade = $("#grade").val();
+			const contact = $('#contact').val();
+			const formData = {
+				code,
+				societyName,
+				catholicName,
+				age,
+				grade,
+				contact,
+			};
+
+			if (!checkData(formData))
+				return;
+
+			$.ajax({
+				url: "/student/modify",
+				type: 'PUT',
+				data: formData,
+				success: (data) => {
+					alert(data);
+					location.href = 'studentList.html';
+				},
+				error: (error) => {
+					alert(error.responseText);
+				}
+			});	
+		}
+	});
+
+	$("#remove").on("click", () => {
+		if (confirm('정말 삭제하시겠습니까?')) {
+			const code = $("#code").val();
+			$.ajax({
+				url: `/student/${code}`,
+				type: 'DELETE',
+				data: {},
+				success: (data) => {
+					alert(data);
+					location.href = 'studentList.html';
+				},
+				error: (error) => {
+					alert(error.responseText);
+				}
+			});
+		}
+	});
+</script>
+</html>
