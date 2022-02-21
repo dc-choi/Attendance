@@ -7,8 +7,6 @@ const PK = require('../middleware/PK');
 
 router.get('/list', async(req, res, next) => {
 	try {
-		console.log(req.query);
-
 		const { searchOption, searchWord } = req.query;
 		let { nowPage } = req.query; // 현재 출력해야할 페이지
 		nowPage = Number(nowPage);
