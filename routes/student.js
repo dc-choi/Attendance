@@ -4,7 +4,6 @@ const sequelize = require('sequelize');
 
 const { student } = require('../models/index').models;
 const PK = require('../middleware/PK');
-const logger = require('../middleware/logger');
 
 // 학생 명단 정보
 router.get('/list', async(req, res, next) => {
@@ -82,7 +81,6 @@ router.get('/list', async(req, res, next) => {
 		sendData.totalPage = totalPage;
 		sendData.nowPage = nowPage;
 
-		logger.info('student/list');
 		res.status(200).send(sendData);
 	} catch (error) {
 		res.status(500);
@@ -99,7 +97,6 @@ router.get('/info', async(req, res, next) => {
 			where: { s_code: code }
 		});
 
-		logger.info('student/info');
 		res.status(200).send(info);
 	} catch (error) {
 		res.status(500);
@@ -131,7 +128,6 @@ router.post('/add', async(req, res, next) => {
 			s_contact: contact,
 		});
 
-		logger.info('student/add');
 		res.status(200).send('학생 입력 성공');
 	} catch (error) {
 		res.status(500);
@@ -159,7 +155,6 @@ router.put('/modify', async(req, res, next) => {
 			},
 		);
 
-		logger.info('student/modify');
 		res.status(200).send('학생 수정 성공');
 	} catch (error) {
 		res.status(500);
@@ -179,7 +174,6 @@ router.delete('/:code', async(req, res, next) => {
 			}
 		});
 
-		logger.info('student/remove');
 		res.status(200).send('학생 삭제 성공');
 	} catch (error) {
 		res.status(500);
