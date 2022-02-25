@@ -28,7 +28,6 @@ router.get('/initPage', async(req, res, next) => {
 		res.status(200).send(sendData);	
 	} catch (error) {
 		res.status(500);
-		logger.error(error.message);
     	next(error);
 	}
 });
@@ -93,7 +92,6 @@ router.get('/table', async(req, res, next) => {
 		res.status(200).send(sendData);	
 	} catch (error) {
 		res.status(500);
-		logger.error(error.message);
     	next(error);
 	}
 });
@@ -171,7 +169,6 @@ router.post('/save', async(req, res, next) => {
 		res.status(200).send('출석 입력 성공');	
 	} catch (error) {
 		res.status(500);
-		logger.error(error.message);
     	next(error);
 	}
 });

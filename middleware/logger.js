@@ -4,7 +4,7 @@ require('winston-daily-rotate-file');
 const moment = require('moment');
 require('moment-timezone');
 
-const logDir =  __dirname + './logs';
+const logDir =  './logs';
 
 if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir);
@@ -19,7 +19,6 @@ const loggingFormat = format.printf(({ level, message }) => {
 })
 
 const logger = createLogger({
-	level: 'info',
 	format: format.combine(
         loggingFormat
     ),
@@ -44,9 +43,10 @@ const logger = createLogger({
 	],
 });
 
-// 운영 환경에서는 안씀.
-// logger.add(new transports.Console({ format: format.combine() }));
+// winston을 콘솔에서도 출력.
+logger.add(new transports.Console({ format: format.combine() }));
 
+// winston을 morgan과 함께 사용할때의 객체
 const stream = {
     write: message => {
         logger.info(message)

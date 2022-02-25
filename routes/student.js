@@ -84,7 +84,6 @@ router.get('/list', async(req, res, next) => {
 		res.status(200).send(sendData);
 	} catch (error) {
 		res.status(500);
-		logger.error(error.message);
     	next(error);
 	}
 });
@@ -100,7 +99,6 @@ router.get('/info', async(req, res, next) => {
 		res.status(200).send(info);
 	} catch (error) {
 		res.status(500);
-		logger.error(error.message);
     	next(error);
 	}
 });
@@ -131,7 +129,6 @@ router.post('/add', async(req, res, next) => {
 		res.status(200).send('학생 입력 성공');
 	} catch (error) {
 		res.status(500);
-		logger.error(error.message);
     	next(error);
 	}
 });
@@ -158,7 +155,6 @@ router.put('/modify', async(req, res, next) => {
 		res.status(200).send('학생 수정 성공');
 	} catch (error) {
 		res.status(500);
-		logger.error(error.message);
     	next(error);
 	}
 });
@@ -177,7 +173,6 @@ router.delete('/:code', async(req, res, next) => {
 		res.status(200).send('학생 삭제 성공');
 	} catch (error) {
 		res.status(500);
-		logger.error(error.message);
     	next(error);
 	}
 });
