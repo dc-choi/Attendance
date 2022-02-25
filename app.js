@@ -3,8 +3,6 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const helmet = require('helmet');
-const moment = require('moment');
-require('moment-timezone');
 
 require('./config/env');
 const { stream } = require('./middleware/logger'); // 로그 남기기위한 모듈 불러오기
@@ -15,7 +13,7 @@ const statisticsRouter = require('./routes/statistics');
 
 const app = express();
 
-app.use(morgan('HTTP/:http-version :method :remote-addr :url :remote-user :status :res[content-length] :referrer :user-agent :response-time ms', {stream}));
+app.use(morgan('HTTP/:http-version :method :remote-addr :url :remote-user :status :res[content-length] :referrer :user-agent :response-time ms', { stream }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
