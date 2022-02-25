@@ -4,7 +4,9 @@ const sequelize = require('sequelize');
 
 const { student } = require('../models/index').models;
 const PK = require('../middleware/PK');
+const logger = require('../middleware/logger');
 
+// 학생 명단 정보
 router.get('/list', async(req, res, next) => {
 	try {
 		const { searchOption, searchWord } = req.query;
@@ -80,26 +82,33 @@ router.get('/list', async(req, res, next) => {
 		sendData.totalPage = totalPage;
 		sendData.nowPage = nowPage;
 
+		logger.info('student/list');
 		res.status(200).send(sendData);
 	} catch (error) {
 		res.status(500);
+		logger.error(error.message);
     	next(error);
 	}
 });
 
+// 학생 상세 정보
 router.get('/info', async(req, res, next) => {
 	try {
 		const code = req.query.receivedData;
 		const info = await student.findOne({
 			where: { s_code: code }
 		});
+
+		logger.info('student/info');
 		res.status(200).send(info);
 	} catch (error) {
 		res.status(500);
+		logger.error(error.message);
     	next(error);
 	}
 });
 
+// 학생 데이터 추가
 router.post('/add', async(req, res, next) => {
 	try {
 		const { societyName, catholicName, age, grade, contact } = req.body;
@@ -121,37 +130,45 @@ router.post('/add', async(req, res, next) => {
 			s_grade: grade,
 			s_contact: contact,
 		});
+
+		logger.info('student/add');
 		res.status(200).send('학생 입력 성공');
 	} catch (error) {
 		res.status(500);
+		logger.error(error.message);
     	next(error);
 	}
 });
 
+// 학생 데이터 수정
 router.put('/modify', async(req, res, next) => {
 	try {
 		console.log(req.body);
 		const { code, societyName, catholicName, age, grade, contact } = req.body;
 		await student.update({
-			s_society_name: societyName,
-			s_catholic_name: catholicName,
-			s_age: age,
-			s_grade: grade,
-			s_contact: contact,
-		},
-		{
-			where: {
-				s_code: code
-			}
-		},
+				s_society_name: societyName,
+				s_catholic_name: catholicName,
+				s_age: age,
+				s_grade: grade,
+				s_contact: contact,
+			},
+			{
+				where: {
+					s_code: code
+				}
+			},
 		);
+
+		logger.info('student/modify');
 		res.status(200).send('학생 수정 성공');
 	} catch (error) {
 		res.status(500);
+		logger.error(error.message);
     	next(error);
 	}
 });
 
+// 학생 데이터 삭제
 router.delete('/:code', async(req, res, next) => {
 	try {
 		console.log(req.params);
@@ -161,9 +178,12 @@ router.delete('/:code', async(req, res, next) => {
 				s_code: code
 			}
 		});
+
+		logger.info('student/remove');
 		res.status(200).send('학생 삭제 성공');
 	} catch (error) {
 		res.status(500);
+		logger.error(error.message);
     	next(error);
 	}
 });

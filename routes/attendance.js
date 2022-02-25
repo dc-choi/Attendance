@@ -5,7 +5,9 @@ const { Op } = require("sequelize");
 
 const { student, attendance } = require('../models/index').models;
 const PK = require('../middleware/PK');
+const logger = require('../middleware/logger');
 
+// 현재 년도와 그룹 정보
 router.get('/initPage', async(req, res, next) => {
 	try {
 		let today = new Date();
@@ -24,13 +26,16 @@ router.get('/initPage', async(req, res, next) => {
 			gradeList,
 			year,
 		};
+		logger.info('attendance/initPage');
 		res.status(200).send(sendData);	
 	} catch (error) {
 		res.status(500);
+		logger.error(error.message);
     	next(error);
 	}
 });
 
+// 출석 데이터 불러오기
 router.get('/table', async(req, res, next) => {
 	try {
 		let { year, grade } = req.query;
@@ -87,13 +92,16 @@ router.get('/table', async(req, res, next) => {
 		sendData.gradeStudents = gradeStudentcode;
 		sendData.attendanceList = attendanceList;
 		
+		logger.info('attendance/table');
 		res.status(200).send(sendData);	
 	} catch (error) {
 		res.status(500);
+		logger.error(error.message);
     	next(error);
 	}
 });
 
+// 출석 데이터 저장
 router.post('/save', async(req, res, next) => {
 	try {
 		const { year, sendData } = req.body;
@@ -162,9 +170,12 @@ router.post('/save', async(req, res, next) => {
 				}
 			}
 		}
+
+		logger.info('attendance/table');
 		res.status(200).send('출석 입력 성공');	
 	} catch (error) {
 		res.status(500);
+		logger.error(error.message);
     	next(error);
 	}
 });
