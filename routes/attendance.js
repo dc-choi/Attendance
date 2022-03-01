@@ -4,7 +4,7 @@ const sequelize = require('sequelize');
 const { Op } = require("sequelize");
 
 const { student, attendance } = require('../models/index').models;
-const PK = require('../middleware/PK');
+const PK = require('../middleware/Pk');
 
 // 현재 년도와 그룹 정보
 router.get('/initPage', async(req, res, next) => {

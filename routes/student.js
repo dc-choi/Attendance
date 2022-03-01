@@ -3,7 +3,7 @@ const router = express.Router();
 const sequelize = require('sequelize');
 
 const { student } = require('../models/index').models;
-const PK = require('../middleware/PK');
+const PK = require('../middleware/Pk');
 
 // 학생 명단 정보
 router.get('/list', async(req, res, next) => {
