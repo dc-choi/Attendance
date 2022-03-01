@@ -49,7 +49,7 @@ router.get('/list', async(req, res, next) => {
 					['s_contact', 'contact'],
 				],
 				where: whereCase,
-				order: [ ['s_age', 'ASC'], ['s_society_name', 'ASC'] ],
+				order: [ ['s_grade', 'ASC'], ['s_age', 'ASC'], ['s_society_name', 'ASC'] ],
 				offset: startRow,
 				limit: rowPerPage,
 			});
@@ -70,7 +70,7 @@ router.get('/list', async(req, res, next) => {
 					['s_grade', 'grade'],
 					['s_contact', 'contact'],
 				],
-				order: [ ['s_age', 'ASC'], ['s_society_name', 'ASC'] ],
+				order: [ ['s_grade', 'ASC'], ['s_age', 'ASC'], ['s_society_name', 'ASC'] ],
 				offset: startRow,
 				limit: rowPerPage,
 			});
