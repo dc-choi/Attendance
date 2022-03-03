@@ -18,13 +18,17 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    s_grade: {
-      type: DataTypes.STRING(50),
-      allowNull: false
-    },
     s_contact: {
       type: DataTypes.STRING(50),
       allowNull: false
+    },
+    gruop_g_code: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      references: {
+        model: 'group',
+        key: 'g_code'
+      }
     }
   }, {
     sequelize,
@@ -37,6 +41,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "s_code" },
+        ]
+      },
+      {
+        name: "fk_student_gruop1_idx",
+        using: "BTREE",
+        fields: [
+          { name: "gruop_g_code" },
         ]
       },
     ]
