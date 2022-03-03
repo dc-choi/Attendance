@@ -22,7 +22,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(50),
       allowNull: false
     },
-    gruop_g_code: {
+    group_g_code: {
       type: DataTypes.STRING(50),
       allowNull: false,
       references: {

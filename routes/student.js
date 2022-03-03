@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const sequelize = require('sequelize');
 
-const { student } = require('../models/index').models;
+const { group, student } = require('../models/index').models;
 const PK = require('../middleware/Pk');
 
 // 학생 명단 정보
@@ -41,16 +41,19 @@ router.get('/list', async(req, res, next) => {
 			totalPage = Math.ceil(totalRow.dataValues.studentCount / rowPerPage);
 			startRow = (nowPage - 1) * rowPerPage;
 			list = await student.findAll({
+				include: [
+					{ model: group, as: 'group_g_code_group', attributes: [] }
+				],
 				attributes: [
 					['s_code', 'code'],
 					['s_society_name', 'societyName'],
 					['s_catholic_name', 'catholicName'],
 					['s_age', 'age'],
-					['s_grade', 'grade'],
+					[sequelize.col('group_g_code_group.g_name'), 'gName'],
 					['s_contact', 'contact'],
 				],
 				where: whereCase,
-				order: [ ['s_grade', 'ASC'], ['s_age', 'ASC'], ['s_society_name', 'ASC'] ],
+				order: [ ['s_age', 'ASC'], ['s_society_name', 'ASC'] ],
 				offset: startRow,
 				limit: rowPerPage,
 			});
@@ -63,15 +66,18 @@ router.get('/list', async(req, res, next) => {
 			totalPage = Math.ceil(totalRow.dataValues.studentCount / rowPerPage);
 			startRow = (nowPage - 1) * rowPerPage;
 			list = await student.findAll({
+				include: [
+					{ model: group, as: 'group_g_code_group', attributes: [] }
+				],
 				attributes: [
 					['s_code', 'code'],
 					['s_society_name', 'societyName'],
 					['s_catholic_name', 'catholicName'],
 					['s_age', 'age'],
-					['s_grade', 'grade'],
+					[sequelize.col('group_g_code_group.g_name'), 'gName'],
 					['s_contact', 'contact'],
 				],
-				order: [ ['s_grade', 'ASC'], ['s_age', 'ASC'], ['s_society_name', 'ASC'] ],
+				order: [ ['s_age', 'ASC'], ['s_society_name', 'ASC'] ],
 				offset: startRow,
 				limit: rowPerPage,
 			});
@@ -107,7 +113,7 @@ router.get('/info', async(req, res, next) => {
 // 학생 데이터 추가
 router.post('/add', async(req, res, next) => {
 	try {
-		const { societyName, catholicName, age, grade, contact } = req.body;
+		const { societyName, catholicName, age, group, contact } = req.body;
 		let code = await PK.addPK();
 		let check = await student.findOne({
 			where: { s_code: code }
@@ -123,7 +129,7 @@ router.post('/add', async(req, res, next) => {
 			s_society_name: societyName,
 			s_catholic_name: catholicName,
 			s_age: age,
-			s_grade: grade,
+			group_g_code: group,
 			s_contact: contact,
 		});
 
@@ -137,12 +143,12 @@ router.post('/add', async(req, res, next) => {
 // 학생 데이터 수정
 router.put('/modify', async(req, res, next) => {
 	try {
-		const { code, societyName, catholicName, age, grade, contact } = req.body;
+		const { code, societyName, catholicName, age, group, contact } = req.body;
 		await student.update({
 				s_society_name: societyName,
 				s_catholic_name: catholicName,
 				s_age: age,
-				s_grade: grade,
+				group_g_code: group,
 				s_contact: contact,
 			},
 			{

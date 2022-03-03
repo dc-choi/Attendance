@@ -3,7 +3,7 @@ const router = express.Router();
 const sequelize = require('sequelize');
 const { Op } = require("sequelize");
 
-const { student, attendance } = require('../models/index').models;
+const { group, student, attendance } = require('../models/index').models;
 const PK = require('../middleware/Pk');
 
 // 현재 년도와 그룹 정보
@@ -11,18 +11,14 @@ router.get('/initPage', async(req, res, next) => {
 	try {
 		let today = new Date();
 		let year = today.getFullYear();
-		const gradeList = await student.findAll({
+		const groupList = await group.findAll({
 			attributes: [
-				['s_grade', 'grade'],
+				['g_code', 'gCode'],
+				['g_name', 'gName'],
 			],
-			where: {
-				s_grade: { [Op.notIn]: ['교사', '졸업'] },
-			},
-			group: 's_grade',
-			order: [ ['s_grade', 'ASC'] ],
 		});
 		const sendData = {
-			gradeList,
+			groupList,
 			year,
 		};
 		res.status(200).send(sendData);	
@@ -35,7 +31,7 @@ router.get('/initPage', async(req, res, next) => {
 // 출석 데이터 불러오기
 router.get('/table', async(req, res, next) => {
 	try {
-		let { year, grade } = req.query;
+		let { year, group } = req.query;
 		year = Number(year);
 		if (year === undefined || typeof year === '' || year === 0) {
 			const now = new Date();
@@ -60,15 +56,16 @@ router.get('/table', async(req, res, next) => {
 			day[e - 1] = temp;
 		});
 	
-		const gradeStudentcode = await student.findAll({
+		const groupStudentcode = await student.findAll({
 			attributes: [
 				['s_code', 'sCode'],
 				['s_society_name', 'societyName'],
 				['s_catholic_name', 'catholicName'],
 			],
-			where: { s_grade: grade}
+			where: { group_g_code: group},
+			order: [ ['s_age', 'ASC'], ['s_society_name', 'ASC'] ],
 		});
-		gradeStudentcode.forEach(e => {
+		groupStudentcode.forEach(e => {
 			students.push(e.dataValues.sCode);
 		});
 	
@@ -86,7 +83,7 @@ router.get('/table', async(req, res, next) => {
 		});
 	
 		sendData.day = day;
-		sendData.gradeStudents = gradeStudentcode;
+		sendData.groupStudents = groupStudentcode;
 		sendData.attendanceList = attendanceList;
 		
 		res.status(200).send(sendData);	

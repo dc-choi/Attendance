@@ -36,12 +36,7 @@
 			<tr width="200" height="30">
 				<td>학년</td>
 				<td>
-					<select name="grade" id="grade">
-						<option value="선택하세요.">선택하세요.</option>
-						<option value="그룹 1">그룹 1</option>
-						<option value="그룹 2">그룹 2</option>
-						<option value="그룹 3">그룹 3</option>
-						<option value="고3">고3</option>
+					<select name="group" id="group">
 					</select>
 				</td>
 			</tr>
@@ -62,6 +57,30 @@
 	</p>
 </body>
 <script>
+	let group = $("#group");
+
+	const initPage = () => {
+		$.ajax({
+			url: "/group/list",
+			type: 'GET',
+			data: {},
+			success: (data) => {
+				console.log(data.list);
+				group.empty();
+				let html = '';
+				html += `<option value="선택하세요.">선택하세요.</option>`;
+				data.list.forEach(element => {
+					console.log(element);
+					html += `<option value="${element.code}">${element.name}</option>`;
+				});
+				group.append(html);
+			},
+			error: (error) => {
+				alert(error.responseText);
+			}
+		});
+	};
+
 	const checkData = (formData) => {
 		const ageRegExp = new RegExp('[1-9]');
 		const contactRegExp = new RegExp('^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$');
@@ -80,9 +99,9 @@
 			$("#age").focus();
 			return false;
 		}
-		if (formData.grade === '선택하세요.') {
-			alert("학년을 선택하세요.");
-			$("#grade").focus();
+		if (formData.group === '선택하세요.') {
+			alert("그룹을 선택하세요.");
+			$("#group").focus();
 			return false;
 		}
 		if (!contactRegExp.test(formData.contact)) {
@@ -93,19 +112,21 @@
 		return true;
 	};
 
+	initPage();
+
 	$("#add").on("click", () => {
 		if (confirm('이대로 입력 하시겠습니까? 다시 한번 확인해주세요.')) {
 			// let formData = $("#formData").serialize(); // 검증이 불가능해서 사용금지!
 			const societyName = $("#societyName").val();
 			const catholicName = $("#catholicName").val();
 			const age = $("#age").val();
-			const grade = $("#grade").val();
+			const group = $("#group").val();
 			const contact = $('#contact').val();
 			const formData = {
 				societyName,
 				catholicName,
 				age,
-				grade,
+				group,
 				contact,
 			};
 

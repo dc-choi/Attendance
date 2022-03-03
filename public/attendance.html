@@ -30,7 +30,7 @@
 		출석=○&nbsp;&nbsp;미사만 참여=△&nbsp;&nbsp;결석=※
 	</p>
 	<p>
-		<select id="grade">
+		<select id="group">
 		</select>
 	</p>
 	<table id="table" border="1" align="center">
@@ -59,10 +59,10 @@
 				}
 				$('#year').append(html);
 				let html2 = '';
-				data.gradeList.forEach(e => {
-					html2 += `<option value="${e.grade}">${e.grade}</option>`;
+				data.groupList.forEach(e => {
+					html2 += `<option value="${e.gCode}">${e.gName}</option>`;
 				});
-				$('#grade').append(html2);
+				$('#group').append(html2);
 				getTable();
 			},
 			error: (error) => {
@@ -73,15 +73,15 @@
 
 	const getTable = () => {
 		let year = $('#year').val();
-		let grade = $('#grade').val();
+		let group = $('#group').val();
 
 		$.ajax({
 			type: 'GET',
 			url: '/attendance/table',
-			data: { year, grade },
+			data: { year, group },
 			success: (data) => {
 				console.log(data);
-				students = data.gradeStudents;
+				students = data.groupStudents;
 				yearDate = data.day;
 				table.empty();
 				let html = `<tr>
@@ -111,7 +111,7 @@
 					html += '</td>';
 				});
 				html += '</tr>';
-				data.gradeStudents.forEach(e => {
+				data.groupStudents.forEach(e => {
 					html += '<tr>';
 					html += `<td align="center">${e.societyName}</td>`;
 					html += `<td align="center">${e.catholicName}</td>`;
@@ -191,7 +191,7 @@
 		getTable();
 	});
 
-	$('#grade').on('change', () => {
+	$('#group').on('change', () => {
 		getTable();
 	});
 
