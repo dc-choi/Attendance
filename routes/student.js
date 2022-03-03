@@ -35,7 +35,8 @@ router.get('/list', async(req, res, next) => {
 			totalRow = await student.findOne({
 				attributes: [
 					[sequelize.fn('COUNT', sequelize.col('s_code')), 'studentCount']
-				]
+				],
+				where: whereCase,
 			});
 			totalPage = Math.ceil(totalRow.dataValues.studentCount / rowPerPage);
 			startRow = (nowPage - 1) * rowPerPage;
@@ -136,7 +137,6 @@ router.post('/add', async(req, res, next) => {
 // 학생 데이터 수정
 router.put('/modify', async(req, res, next) => {
 	try {
-		console.log(req.body);
 		const { code, societyName, catholicName, age, grade, contact } = req.body;
 		await student.update({
 				s_society_name: societyName,
@@ -162,7 +162,6 @@ router.put('/modify', async(req, res, next) => {
 // 학생 데이터 삭제
 router.delete('/:code', async(req, res, next) => {
 	try {
-		console.log(req.params);
 		const { code } = req.params;
 		await student.destroy({
 			where: {
