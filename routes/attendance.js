@@ -121,7 +121,7 @@ router.post('/save', async(req, res, next) => {
 			});
 	
 			if (checkAttendance === null) {
-				if (sendData[i].data === '○' || sendData[i].data === '△' || sendData[i].data === '※') {
+				if (sendData[i].data === '◎' || sendData[i].data === '○') {
 					let pk = await PK.addPK();
 					let check = await attendance.findOne({
 						where: { a_code: pk }
@@ -141,7 +141,7 @@ router.post('/save', async(req, res, next) => {
 					})
 				}
 			} else {
-				if (sendData[i].data === '○' || sendData[i].data === '△' || sendData[i].data === '※') {
+				if (sendData[i].data === '◎' || sendData[i].data === '○') {
 					await attendance.update({
 							a_content: sendData[i].data,
 						},
