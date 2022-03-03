@@ -8,6 +8,7 @@ require('./config/env');
 const { stream } = require('./middleware/logger'); // 로그 남기기위한 모듈 불러오기
 const indexRouter = require('./routes/index');
 const attendanceRouter = require('./routes/attendance');
+const groupRouter = require('./routes/group');
 const studentRouter = require('./routes/student');
 const statisticsRouter = require('./routes/statistics');
 
@@ -22,6 +23,7 @@ app.use(helmet());
 
 app.use('/index', indexRouter);
 app.use('/attendance', attendanceRouter);
+app.use('/group', groupRouter);
 app.use('/student', studentRouter);
 app.use('/statistics', statisticsRouter);
 

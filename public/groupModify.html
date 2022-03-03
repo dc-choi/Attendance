@@ -1,0 +1,111 @@
+<html>
+<head>
+	<title>출석부</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<style>
+		#body{
+			position: absolute;
+			top: 25%;
+			left: 40%;
+		}
+	</style>
+</head>
+<body id="body" align="center">
+	<h1>그룹 데이터 수정 및 삭제</h1>
+	<form id="formData">
+		<table id="list" border="1" align="center">
+			<input type="hidden" name="code" id="code">
+			<tr width="200" height="30">
+				<td>이름</td>
+				<td>
+					<input type="text" name="name" id="name">
+				</td>
+			</tr>
+		</table>
+	</form>
+	<p>
+		<button type="button" id="modify">수정 완료</button>
+		<button type="button" id="remove">삭제</button>
+	</p>
+	<p>
+		<a href="groupList.html">뒤로 가기</a>
+	</p>
+</body>
+<script>
+	const receivedData = location.href.split('?')[1];
+	console.log(receivedData); // data
+
+	const initPage = () => {
+		$.ajax({
+			url: "/group/info",
+			type: 'GET',
+			data: { receivedData },
+			success: (data) => {
+				console.log(data);
+				$('#code').val(data.g_code);
+				$('#name').val(data.g_name);
+			},
+			error: (error) => {
+				alert(error.responseText);
+			}
+		});
+	};
+
+	const checkData = (formData) => {
+		if (formData.name.length < 1) {
+			alert("이름을 정확히 입력하세요.");
+			$("#name").focus();
+			return false;
+		}
+		return true;
+	};
+
+	initPage();
+
+	$("#modify").on("click", () => {
+		if (confirm('정말 수정하시겠습니까?')) {
+			// let formData = $("#formData").serialize(); // 검증이 불가능해서 사용금지!
+			const code = $("#code").val();
+			const name = $("#name").val();
+			const formData = {
+				code,
+				name,
+			};
+
+			if (!checkData(formData))
+				return;
+
+			$.ajax({
+				url: "/group/modify",
+				type: 'PUT',
+				data: formData,
+				success: (data) => {
+					alert(data);
+					location.href = 'groupList.html';
+				},
+				error: (error) => {
+					alert(error.responseText);
+				}
+			});	
+		}
+	});
+
+	$("#remove").on("click", () => {
+		if (confirm('정말 삭제하시겠습니까?')) {
+			const code = $("#code").val();
+			$.ajax({
+				url: `/group/${code}`,
+				type: 'DELETE',
+				data: {},
+				success: (data) => {
+					alert(data);
+					location.href = 'groupList.html';
+				},
+				error: (error) => {
+					alert(error.responseText);
+				}
+			});
+		}
+	});
+</script>
+</html>

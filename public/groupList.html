@@ -1,0 +1,58 @@
+<html>
+<head>
+	<title>출석부</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<style>
+		#body{
+			position: absolute;
+			top: 15%;
+			left: 35%;
+		}
+	</style>
+</head>
+<body id="body" align="center">
+	<h1>장위동 중고등부 주일학교 그룹 리스트</h1>
+	<table id="table" border="1" align="center">
+	</table>
+	<p><a href="groupAdd.html">그룹 추가</a></p>
+	<p><a href="index.html">뒤로 가기</a></p>
+</body>
+<script>
+	let table = $('#table');
+
+	const initPage = () => {
+		$.ajax({
+			type: 'GET',
+			url: '/group/list',
+			data: {},
+			success: (data) => {
+				console.log(data);
+				table.empty();
+				let html = `<tr>
+					<td width="200" align="center">그룹 번호</td>
+					<td width="200" align="center">그룹 명</td>
+					<td width="200" align="center">비고</td>
+				</tr>`;
+				data.list.forEach(e => {
+					html += `<tr>
+					<td width="200" align="center">${e.code}</td>
+					<td width="200" align="center">${e.name}</td>
+					<td width="200" align="center"><button type="button" onclick="modifyData('${e.code}')">수정</button></td>
+				</tr>`;
+				});
+				table.append(html);
+			},
+			error: (error) => {
+				console.log(error.responseText);
+			}
+		})
+	};
+
+	const modifyData = (code) => {
+		location.href = `groupModify.html?${code}`;
+	};
+
+	initPage();
+
+</script>
+</html>

@@ -1,0 +1,69 @@
+<html>
+<head>
+	<title>출석부</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<style>
+		#body{
+			position: absolute;
+			top: 25%;
+			left: 42.5%;
+		}
+	</style>
+</head>
+<body id="body" align="center">
+	<h1>그룹 데이터 입력</h1>
+	<form id="formData">
+		<table id="list" border="1" align="center">
+			<!-- <input type="hidden" name="code" id="code"> -->
+			<tr width="200" height="30">
+				<td>이름</td>
+				<td>
+					<input type="text" name="name" id="name">
+				</td>
+			</tr>
+		</table>
+	</form>
+	<p>
+		<button type="button" id="add">그룹 추가</button>
+	</p>
+	<p>
+		<a href="groupList.html">뒤로 가기</a>
+	</p>
+</body>
+<script>
+	const checkData = (formData) => {
+		if (formData.name.length < 1) {
+			alert("이름을 정확히 입력하세요.");
+			$("#name").focus();
+			return false;
+		}
+		return true;
+	};
+
+	$("#add").on("click", () => {
+		if (confirm('이대로 입력 하시겠습니까? 다시 한번 확인해주세요.')) {
+			// let formData = $("#formData").serialize(); // 검증이 불가능해서 사용금지!
+			const name = $("#name").val();
+			const formData = {
+				name,
+			};
+
+			if (!checkData(formData))
+				return;
+
+			$.ajax({
+				url: "/group/add",
+				type: 'POST',
+				data: formData,
+				success: (data) => {
+					alert(data);
+					location.href = 'groupList.html';
+				},
+				error: (error) => {
+					alert(error.responseText);
+				}
+			});	
+		}
+	});
+</script>
+</html>
