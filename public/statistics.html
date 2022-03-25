@@ -2,32 +2,215 @@
 <head>
 	<title>출석부</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<style>
+		#body{
+			position: absolute;
+			top: 5%;
+			left: 25%;
+		}
+		.chart{
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+		}
+	</style>
 </head>
-<body>
-  <h1>장위동 중고등부 주일학교 출석부</h1>
-  <table>
-	  <tr>
-		  <td>3</td>
-		  <td>3</td>
-		  <td>3</td>
-	  </tr>
-  </table>
-  <p><a href="index.html">뒤로 가기</a></p>
+<body id="body" align="center">
+	<h1>
+		<select id="year">
+		</select>년
+		<select id="month">
+		</select>월 
+		통계
+	</h1>
+	<div class="chart">
+		<div>
+			<span>월별 총 학생 출석수</span>
+			<canvas id="studentCountForMonth"></canvas>
+		</div>
+		<div>
+			<span>주간별 총 학생 출석수</span>
+			<canvas id="studentCountForWeek"></canvas>
+		</div>
+		<div>
+			<span>우수 출석 학생(연도 기준)</span>
+			<canvas id="excellentStudent"></canvas>
+		</div>
+	</div>
+	<br>
+	<div class="chart">
+		<div>
+			<span>그룹별 학생 출석수(월 기준)</span>
+			<canvas id="groupCountForMonth"></canvas>
+		</div>
+		<div>
+			<span>그룹별 학생 출석수(주간 기준)</span>
+			<canvas id="groupCountForWeek"></canvas>
+		</div>
+	</div>
+	<p><a href="index.html">뒤로 가기</a></p>
 </body>
 <script>
-	const initPage = () => {
-		$.ajax({
-			type: 'get',
-			url: '/statistics',
-			data: {},
-			success: (data) => {
-				console.log(data);
-			},
-			error: (error) => {
-				console.log(error);
+	const labels = [
+		'1월',
+		'2월',
+		'3월',
+		'4월',
+		'5월',
+		'6월',
+		'7월',
+		'8월',
+		'9월',
+		'10월',
+		'11월',
+		'12월',
+	];
+
+	const barData = {
+		labels: labels,
+		datasets: [{
+			label: '1',
+			data: [65, 59, 80, 81, 56, 55, 40, 40, 40, 40, 40, 40],
+			backgroundColor: [
+				'rgba(255, 99, 132, 0.2)',
+				'rgba(255, 159, 64, 0.2)',
+				'rgba(255, 205, 86, 0.2)',
+				'rgba(75, 192, 192, 0.2)',
+				'rgba(54, 162, 235, 0.2)',
+				'rgba(153, 102, 255, 0.2)',
+			],
+			borderColor: [
+				'rgb(255, 99, 132)',
+				'rgb(255, 159, 64)',
+				'rgb(255, 205, 86)',
+				'rgb(75, 192, 192)',
+				'rgb(54, 162, 235)',
+				'rgb(153, 102, 255)',
+				'rgb(201, 203, 207)'
+			],
+			borderWidth: 1
+		},
+		{
+			label: '2',
+			data: [65, 59, 80, 81, 56, 55, 40, 40, 40, 40, 40, 40],
+			backgroundColor: [
+				'rgba(255, 99, 132, 0.2)',
+				'rgba(255, 159, 64, 0.2)',
+				'rgba(255, 205, 86, 0.2)',
+				'rgba(75, 192, 192, 0.2)',
+				'rgba(54, 162, 235, 0.2)',
+				'rgba(153, 102, 255, 0.2)',
+			],
+			borderColor: [
+				'rgb(255, 99, 132)',
+				'rgb(255, 159, 64)',
+				'rgb(255, 205, 86)',
+				'rgb(75, 192, 192)',
+				'rgb(54, 162, 235)',
+				'rgb(153, 102, 255)',
+				'rgb(201, 203, 207)'
+			],
+			borderWidth: 1
+		},
+		{
+			label: '3',
+			data: [65, 59, 80, 81, 56, 55, 40, 40, 40, 40, 40, 40],
+			backgroundColor: [
+				'rgba(255, 99, 132, 0.2)',
+				'rgba(255, 159, 64, 0.2)',
+				'rgba(255, 205, 86, 0.2)',
+				'rgba(75, 192, 192, 0.2)',
+				'rgba(54, 162, 235, 0.2)',
+				'rgba(153, 102, 255, 0.2)',
+			],
+			borderColor: [
+				'rgb(255, 99, 132)',
+				'rgb(255, 159, 64)',
+				'rgb(255, 205, 86)',
+				'rgb(75, 192, 192)',
+				'rgb(54, 162, 235)',
+				'rgb(153, 102, 255)',
+				'rgb(201, 203, 207)'
+			],
+			borderWidth: 1
+		}]
+	};
+
+	const barConfig = {
+		type: 'bar',
+		data: barData,
+		options: {
+			scales: {
+				y: {
+					beginAtZero: true
+				}
 			}
-		})
-	}
-	initPage();
+		},
+	};
+
+	const doughnutData = {
+		labels: [
+			'Red',
+			'Blue',
+			'Yellow',
+			'gray',
+			'white'
+		],
+		datasets: [{
+			data: [300, 50, 100, 150, 200],
+			backgroundColor: [
+				'rgb(255, 99, 132)',
+				'rgb(255, 159, 64)',
+				'rgb(255, 205, 86)',
+				'rgb(75, 192, 192)',
+				'rgb(54, 162, 235)',
+				'rgb(153, 102, 255)',
+				'rgb(201, 203, 207)'
+			],
+			hoverOffset: 4
+		}]
+	};
+
+	const doughnutConfig = {
+		type: 'doughnut',
+		data: doughnutData,
+	};
+
+	const studentCountForMonth = new Chart(
+		document.getElementById('studentCountForMonth'),
+		barConfig
+	);
+	const studentCountForWeek = new Chart(
+		document.getElementById('studentCountForWeek'),
+		barConfig
+	);
+	const excellentStudent = new Chart(
+		document.getElementById('excellentStudent'),
+		doughnutConfig
+	);
+	const groupCountForMonth = new Chart(
+		document.getElementById('groupCountForMonth'),
+		barConfig
+	);
+	const groupCountForWeek = new Chart(
+		document.getElementById('groupCountForWeek'),
+		barConfig
+	);
+
+	// const initPage = () => {
+	// 	$.ajax({
+	// 		type: 'get',
+	// 		url: '/statistics',
+	// 		data: {},
+	// 		success: (data) => {
+	// 			console.log(data);
+	// 		},
+	// 		error: (error) => {
+	// 			console.log(error);
+	// 		}
+	// 	})
+	// }
+	// initPage();
 </script>
 </html>
