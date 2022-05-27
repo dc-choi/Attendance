@@ -3,8 +3,6 @@
 ## 개발기간
 22.02.19 ~ 현재 (첫 배포는 기획한지 2주만에 진행)
 
-___
-
 ## 만들게 된 계기
 <details>
 <!-- <summary>접기/펼치기 버튼</summary> -->
@@ -33,8 +31,6 @@ ___
 
 </details>
 
-___
-
 ## 사용 기술
 <details>
 <!-- <summary>접기/펼치기 버튼</summary> -->
@@ -58,8 +54,6 @@ DevOps
 
 </details>
 
-___
-
 ## 주요 기능
 <details>
 <!-- <summary>접기/펼치기 버튼</summary> -->
@@ -71,12 +65,8 @@ ___
 
 </details>
 
-___
-
 ## 출석부 프로그램 초기 화면 구성
 [오븐을 이용한 프로토타입](https://ovenapp.io/view/uUt1nneSOrTuih71pV814CGUcr6lRVKP/I6IRP)
-
-___
 
 ## 패치내역
 <details>
@@ -89,8 +79,6 @@ ___
 	3. DB 설계 변경으로 인한 사이드 이펙트 수정
 
 </details>
-
-___
 
 ## 개선점 및 향후 패치방향
 <details>
@@ -106,8 +94,6 @@ ___
 [https://sunmon.github.io/vscode-eslint-prettier-setting/](https://sunmon.github.io/vscode-eslint-prettier-setting/) 참고
 
 </details>
-
-___
 
 ## 느낀점
 <details>
