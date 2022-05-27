@@ -33,22 +33,34 @@
 
 ## 사용 기술
 
-FrontEnd
+
+<details>
+<summary>FrontEnd</summary>
+
 - HTML5
 - CSS3
 - JavaScript
 - jQuery 3.6.0
 
-BackEnd
+</details>
+
+<details>
+<summary>BackEnd</summary>
+
 - Node.js 17.6.0
 - Express 4.16.1
 - Sequelize 6.16.2
 - MYSQL 8.0.28
+</details>
 
-DevOps
+<details>
+<summary>DevOps</summary>
+
 - Ubuntu 20.04.4 LTS
 - AWS EC2
 - GitHub
+
+</details>
 
 ## 주요 기능
 
@@ -57,13 +69,12 @@ DevOps
 - 출석부: 주일학교 학생들의 출석을 보고, 추가하고, 수정하고, 삭제할 수 있습니다.
 - 통계(추후 패치를 통해 추가 예정): 학생들의 출석 현황을 간단하게 확인 할 수 있습니다.
 
-## 출석부 프로그램 초기 화면 구성
-[오븐을 이용한 프로토타입](https://ovenapp.io/view/uUt1nneSOrTuih71pV814CGUcr6lRVKP/I6IRP)
+<!-- ## 출석부 프로그램 초기 화면 구성
+[오븐을 이용한 프로토타입](https://ovenapp.io/view/uUt1nneSOrTuih71pV814CGUcr6lRVKP/I6IRP) -->
 
 ## 패치내역
 
-- v1.1.0 (22.03.03)
-	- 기능 및 버그를 추가, 수정하였습니다.<br/><br/>
+- v1.1.0 (22.03.03) : 기능 및 버그를 추가, 수정하였습니다.
 	1. 학생 조회에서 검색시 페이징이 정상적으로 적용되지않던 버그 수정
 	2. 그룹 CRUD 기능 추가
 	3. DB 설계 변경으로 인한 사이드 이펙트 수정
@@ -78,8 +89,7 @@ DevOps
 4. 초등부와 데이터 연계를 생각하고 있습니다. 초등부와 데이터를 연계하게 된다면, 아이들의 정보를 직접 인수인계 받지않아도 자동으로 중고등부로 인계되도록 설계 할 것입니다. 초등부와 연계에 필요한 기능은 로그인, 로그아웃을 추가할 예정입니다.
 5. 아이들이 한살 먹으면 자동으로 아이들의 나이를 한살 증가시켜주는 기능을 추가 할 예정입니다. 초등부의 경우, 자동으로 학년도 올라가도록 설정 할 것이고, 중고등부로 올라올때 초등부의 그룹에서 자동으로 해제되도록 할 것입니다.
 6. UI를 수정할 예정입니다. 현재 UI는 가독성이 좋지않아 사용에 불편이 있을것으로 예상합니다. 그에 따른 대대적인 UI 수정을 진행할 예정입니다.
-7. UI 수정을 진행하면서, 코드 리펙토링도 진행할 예정입니다. (eslint 적용 및 Clean Code 지향)
-[https://sunmon.github.io/vscode-eslint-prettier-setting/](https://sunmon.github.io/vscode-eslint-prettier-setting/) 참고
+7. UI 수정을 진행하면서, 코드 리펙토링도 진행할 예정입니다. [참고링크: eslint 적용 및 Clean Code 지향](https://sunmon.github.io/vscode-eslint-prettier-setting/)
 
 </details>
 
