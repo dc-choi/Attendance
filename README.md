@@ -32,8 +32,7 @@
 22.02.19 ~ 현재 (첫 배포는 기획한지 2주만에 진행)
 
 ## 시스템 구성도
-![시스템 구성도](https://github.com/dc-choi/Attendance/blob/master/img/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD.png
-)
+![시스템 구성도](https://github.com/dc-choi/Attendance/blob/master/img/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD.png)
 
 ## 사용 기술
 
