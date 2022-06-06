@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 
 require('./config/env');
+require('./middleware/cron'); // Server cron
 const { stream } = require('./middleware/logger'); // 로그 남기기위한 모듈 불러오기
 const indexRouter = require('./routes/index');
 const attendanceRouter = require('./routes/attendance');
