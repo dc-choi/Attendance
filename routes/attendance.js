@@ -93,14 +93,14 @@ router.get('/table', async(req, res, next) => {
 	}
 });
 
-// 출석 데이터 저장
-router.post('/save', async(req, res, next) => {
+// 출석 미 입력 데이터 저장
+router.post('/emptySave', async(req, res, next) => {
 	try {
-		const { year, sendData } = req.body;
+		const { year, emptyData } = req.body;
 
-		for (let i = 0; i < sendData.length; i++) { // sendData.forEach(e => {});로는 안 돌아가서 for문 사용
-			let code = sendData[i].str.substring(0, 13);
-			let str = sendData[i].str.split('-');
+		for (let i = 0; i < emptyData.length; i++) { // forEach 안 돌아가서 for문 사용
+			let code = emptyData[i].str.substring(0, 13);
+			let str = emptyData[i].str.split('-');
 			let time = str[2].split('.');
 			let fullTime;
 	
@@ -112,54 +112,87 @@ router.post('/save', async(req, res, next) => {
 				fullTime = `${year}${time[0]}${time[1].padStart(2, '0')}`;
 			else
 				fullTime = `${year}${time[0]}${time[1]}`;
-	
+
 			const checkAttendance = await attendance.findOne({
 				where: {
 					student_s_code: code,
 					a_date: fullTime,
 				},
 			});
+
+			if (checkAttendance !== null) {
+				await attendance.destroy({
+					where: {
+						a_date: fullTime,
+						student_s_code: code,
+					}
+				});
+			}
+		}
+
+		res.status(200).send('출석 입력 성공');	
+	} catch (error) {
+		res.status(500);
+    	next(error);
+	}
+});
+
+router.post('/fullSave', async(req, res, next) => {
+	try {
+		const { year, fullData } = req.body;
+
+		for (let i = 0; i < fullData.length; i++) { // forEach 안 돌아가서 for문 사용
+			let code = fullData[i].str.substring(0, 13);
+			let str = fullData[i].str.split('-');
+			let time = str[2].split('.');
+			let fullTime;
 	
+			if (time[0] < 10 && time[1] < 10)
+				fullTime = `${year}${time[0].padStart(2, '0')}${time[1].padStart(2, '0')}`;
+			else if (time[0] < 10)
+				fullTime = `${year}${time[0].padStart(2, '0')}${time[1]}`;
+			else if (time[1] < 10)
+				fullTime = `${year}${time[0]}${time[1].padStart(2, '0')}`;
+			else
+				fullTime = `${year}${time[0]}${time[1]}`;
+			
+			const checkAttendance = await attendance.findOne({
+				where: {
+					student_s_code: code,
+					a_date: fullTime,
+				},
+			});
+
 			if (checkAttendance === null) {
-				if (sendData[i].data === '◎' || sendData[i].data === '○') {
-					let pk = await PK.addPK();
-					let check = await attendance.findOne({
+				let pk = await PK.addPK();
+				let check = await attendance.findOne({
+					where: { a_code: pk }
+				});
+				while (check != null) {
+					pk = await PK.addPK();
+					check = await attendance.findOne({
 						where: { a_code: pk }
 					});
-					while (check != null) {
-						pk = await PK.addPK();
-						check = await attendance.findOne({
-							where: { a_code: pk }
-						});
-					}
-
-					await attendance.create({
-						a_code: pk,
-						a_date: fullTime,
-						a_content: sendData[i].data,
-						student_s_code: code,
-					})
 				}
+
+				await attendance.create({
+					a_code: pk,
+					a_date: fullTime,
+					a_content: fullData[i].data,
+					student_s_code: code,
+				})
 			} else {
-				if (sendData[i].data === '◎' || sendData[i].data === '○') {
-					await attendance.update({
-							a_content: sendData[i].data,
-						},
-						{
-							where: {
-								a_date: fullTime,
-								student_s_code: code,
-							}
-						},
-					);
-				} else {
-					await attendance.destroy({
+				await attendance.update(
+					{
+						a_content: fullData[i].data,
+					},
+					{
 						where: {
 							a_date: fullTime,
 							student_s_code: code,
 						}
-					});
-				}
+					}
+				);
 			}
 		}
 
