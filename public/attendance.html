@@ -152,7 +152,6 @@
 
 	const save = () => {
 		if (confirm('정말 이대로 입력 하시겠습니까?')) {
-			let success = true;
 			let year = $('#year').val();
 			let loopData = {};
 			let emptyData = [];
@@ -192,10 +191,10 @@
 				url: '/attendance/fullSave',
 				data: { year, fullData },
 				success: (data) => {
-					if (data !== "출석 입력 성공") success = false;
+					if (data === "출석 입력 성공") alert("출석 입력중...");
 				},
 				error: (error) => {
-					console.log(error);
+					alert(error);
 				}
 			});
 
@@ -204,15 +203,12 @@
 				url: '/attendance/emptySave',
 				data: { year, emptyData },
 				success: (data) => {
-					if (data !== "출석 입력 성공") success = false;
+					if (data === "출석 입력 성공") alert(data);
 				},
 				error: (error) => {
-					console.log(error);
+					alert(error);
 				}
 			});
-
-			if (success === true) alert("출석 입력 성공");
-			else alert("입력 실패!");
 		}
 	};
 
