@@ -1,57 +1,53 @@
 <html>
 <head>
 	<title>출석부</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<link href="./css/common.css" rel="stylesheet">
 	<style>
-		#body{
-			position: absolute;
-			top: 5%;
-			left: 25%;
-		}
-		.chart{
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-		}
 	</style>
 </head>
-<body id="body" align="center">
-	<h1>
-		<select id="year">
-			<option>2022</option>
-		</select>년
-		<select id="month">
-			<option>6</option>
-		</select>월 
-		통계
-	</h1>
-	<div class="chart">
-		<div>
-			<span>월별 총 학생 출석수</span>
-			<canvas id="studentCountForMonth"></canvas>
+<body>
+	<div class="container">
+		<h1>
+			<select id="year">
+				<option>2022</option>
+			</select>년
+			<select id="month">
+				<option>6</option>
+			</select>월 
+			통계
+		</h1>
+		<div class="chart">
+			<div>
+				<span>월별 총 학생 출석수</span>
+				<canvas id="studentCountForMonth"></canvas>
+			</div>
+			<div>
+				<span>주간별 총 학생 출석수</span>
+				<canvas id="studentCountForWeek"></canvas>
+			</div>
+			<div>
+				<span>우수 출석 학생(연도 기준)</span>
+				<canvas id="excellentStudent"></canvas>
+			</div>
 		</div>
-		<div>
-			<span>주간별 총 학생 출석수</span>
-			<canvas id="studentCountForWeek"></canvas>
+		<br>
+		<div class="chart">
+			<div>
+				<span>그룹별 학생 출석수(월 기준)</span>
+				<canvas id="groupCountForMonth"></canvas>
+			</div>
+			<div>
+				<span>그룹별 학생 출석수(주간 기준)</span>
+				<canvas id="groupCountForWeek"></canvas>
+			</div>
 		</div>
-		<div>
-			<span>우수 출석 학생(연도 기준)</span>
-			<canvas id="excellentStudent"></canvas>
-		</div>
+		<p><a class="btn btn-primary" href="index.html">뒤로 가기</a></p>
 	</div>
-	<br>
-	<div class="chart">
-		<div>
-			<span>그룹별 학생 출석수(월 기준)</span>
-			<canvas id="groupCountForMonth"></canvas>
-		</div>
-		<div>
-			<span>그룹별 학생 출석수(주간 기준)</span>
-			<canvas id="groupCountForWeek"></canvas>
-		</div>
-	</div>
-	<p><a href="index.html">뒤로 가기</a></p>
 </body>
 <script>
 	const labels = [
