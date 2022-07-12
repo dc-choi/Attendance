@@ -32,6 +32,9 @@
 22.02.19 ~ 현재 (첫 배포는 기획한지 2주만에 진행)
 
 ## 시스템 구성도
+
+![시스템 구성도](https://github.com/dc-choi/Attendance/blob/master/img/v1.2.1%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90.png)
+
 <details>
 <summary> ~ v1.2.0 시스템 구성도</summary>
 
