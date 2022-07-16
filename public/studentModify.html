@@ -37,7 +37,7 @@
 							<select class="form-select" name="group" id="group"></select>
 						</td>
 						<td scope="col" class="text-center">
-							<input class="form-control" type="text" name="contact" id="contact">
+							<input class="form-control" type="text" name="contact" id="contact" onkeyup="eventKeypressOnlyTel(event)">
 						</td>
 					</tr>
 				</tbody>
@@ -101,6 +101,70 @@
 		});
 	};
 
+	const eventKeypressOnlyTel = ( obj ) => {
+		var reg = /(^02.{0})/;
+		if(reg.test(obj.target.value)) {
+			$("#"+obj.target.id).attr("maxlength","12");
+		} else {
+			$("#"+obj.target.id).attr("maxlength","13");
+		}
+		let inputVal = obj.target.value;
+		obj.target.value = getTel(inputVal);
+	};
+
+	const getTel = ( str ) => {
+		str = str.replace(/[^0-9]/g, '');
+		let tmp = '';
+
+		if (str.substring(0, 2) == 02) {
+			if (str.length < 3) {
+				return str;
+			} else if (str.length < 6) {
+				tmp += str.substr(0, 2);
+				tmp += '-';
+				tmp += str.substr(2);
+				return tmp;
+			} else if (str.length < 10) {
+				tmp += str.substr(0, 2);
+				tmp += '-';
+				tmp += str.substr(2, 3);
+				tmp += '-';
+				tmp += str.substr(5);
+				return tmp;
+			} else {
+				tmp += str.substr(0, 2);
+				tmp += '-';
+				tmp += str.substr(2, 4);
+				tmp += '-';
+				tmp += str.substr(6, 4);
+				return tmp;
+			}
+		} else {
+			// 핸드폰 및 다른 지역 전화번호 일 경우
+			if (str.length < 4) {
+				return str;
+			} else if (str.length < 7) {
+				tmp += str.substr(0, 3);
+				tmp += '-';
+				tmp += str.substr(3);
+				return tmp;
+			} else if (str.length < 11) {
+				tmp += str.substr(0, 3);
+				tmp += '-';
+				tmp += str.substr(3, 3);
+				tmp += '-';
+				tmp += str.substr(6);
+				return tmp;
+			} else {
+				tmp += str.substr(0, 3);
+				tmp += '-';
+				tmp += str.substr(3, 4);
+				tmp += '-';
+				tmp += str.substr(7);
+				return tmp;
+			}
+		}
+	};
 	const checkData = (formData) => {
 		const ageRegExp = new RegExp('[1-9]');
 		const contactRegExp = new RegExp('^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$');
