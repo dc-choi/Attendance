@@ -45,7 +45,7 @@ router.get('/table', async(req, res, next) => {
 	
 		month.forEach(e => {
 			let temp = [];
-			const lastDay = new Date(year, e - 1, 0).getDate();
+			const lastDay = new Date(year, e, 0).getDate();
 			
 			for (let i = 1; i <= lastDay; i++) {
 				const date = new Date(year, e - 1, i);
